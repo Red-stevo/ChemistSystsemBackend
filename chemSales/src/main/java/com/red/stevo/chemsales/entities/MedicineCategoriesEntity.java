@@ -1,4 +1,4 @@
-package com.red.stevo.chemsales.Entities;
+package com.red.stevo.chemsales.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -15,10 +15,13 @@ import lombok.NoArgsConstructor;
 @Table(name="medicine_category_table")
 public class MedicineCategoriesEntity {
     @Id
+    @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private String categoryId;
 
-    @Size(max = 250, message = "Category Name was Too Long")
+    @Size(max = 250, message = "Category Name was Too Long.Please Contact Your Developer.")
+    @Column(unique = true)
     private String categoryName;
+
 
 }

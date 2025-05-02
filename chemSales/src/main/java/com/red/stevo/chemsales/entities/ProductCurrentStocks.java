@@ -1,0 +1,42 @@
+package com.red.stevo.chemsales.entities;
+
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+
+@Data
+@Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="products_current_stock_table")
+public class ProductCurrentStocks {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String stockId;
+
+    @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
+    private Double totalCost;
+
+    @Size(message = "Stock Count Too Large. Please Contact Your Developer.")
+    private Integer stockCount;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateOfStockUpdate;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate expiryDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_product_current_stock", referencedColumnName = "product_id")
+    private ProductsEntity productsEntity;
+
+}
