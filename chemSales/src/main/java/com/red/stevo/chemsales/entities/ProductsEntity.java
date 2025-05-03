@@ -4,6 +4,7 @@ package com.red.stevo.chemsales.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
 @Data
 @Builder
@@ -18,20 +19,14 @@ public class ProductsEntity {
     @Column(name = "product_id")
     private String productId;
 
-    @Size(min = 2, max = 250, message = "Please Choose a Different Product Name.")
-    @Column(unique = true)
     private String productName;
 
-    @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
     private String productImageUrl;
 
-    @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
     private Double productBuyingPrice;
 
-    @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
     private Double productSellingPrice;
 
-    @Size(max = 250, message = "Location Name Too Long.")
     private String productLocation;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
