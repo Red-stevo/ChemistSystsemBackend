@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name="products_types_table")
 public class ProductTypeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String typeId;
 
     @Size(max = 250, message = "The Product Type is Too Long. Product Type Not Support.Please Contact Your Developer.")
