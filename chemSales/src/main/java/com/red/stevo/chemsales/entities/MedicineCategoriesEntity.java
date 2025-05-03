@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @Builder
 @Entity
@@ -22,6 +23,5 @@ public class MedicineCategoriesEntity {
     @Size(max = 250, message = "Category Name was Too Long.Please Contact Your Developer.")
     @Column(unique = true)
     private String categoryName;
-
 
 }

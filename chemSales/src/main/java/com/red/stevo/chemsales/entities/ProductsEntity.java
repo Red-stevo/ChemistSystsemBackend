@@ -2,9 +2,7 @@ package com.red.stevo.chemsales.entities;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
 
 @Data
 @Builder
