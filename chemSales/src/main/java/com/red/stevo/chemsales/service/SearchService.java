@@ -6,8 +6,11 @@ import com.red.stevo.chemsales.repositories.MedicineCategoryRepository;
 import com.red.stevo.chemsales.repositories.ProductsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +23,22 @@ public class SearchService {
 
     private final ProductsRepository productsRepo;
 
-    public List<MedicineCategoriesEntity> searchCategories(String category) {
-        return categoryRepo.findAllByCategoryNameContainingIgnoreCase(category).orElse(new ArrayList<>());
+    public ResponseEntity<List<MedicineCategoriesEntity>> searchCategories(String category) {
+        return new ResponseEntity<>(
+                categoryRepo.findAllByCategoryNameContainingIgnoreCase(category).orElse(new ArrayList<>()),
+                        HttpStatus.OK);
     }
 
-    public List<ProductsEntity> searchProductName(String name){
-        return productsRepo.findAllByProductNameContainingIgnoreCase(name).orElse(new ArrayList<>());
+    public ResponseEntity<List<ProductsEntity>> searchProductName(String name){
+        return new ResponseEntity<>(
+                productsRepo.findAllByProductNameContainingIgnoreCase(name).orElse(new ArrayList<>()),
+                HttpStatus.OK);
     }
 
-    public List<Object> genSearch(String text) {
+    public ResponseEntity<List<Object>> genSearch(String text) {
         log.info("General Search.");
-        return List.of(searchProductName(text), searchCategories(text));
+        return new ResponseEntity<>(
+                List.of(searchProductName(text), searchCategories(text)),
+                HttpStatus.OK);
     }
 }

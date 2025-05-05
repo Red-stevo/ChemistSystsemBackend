@@ -2,6 +2,7 @@ package com.red.stevo.chemsales.service;
 
 import com.red.stevo.chemsales.entities.MedicineCategoriesEntity;
 import com.red.stevo.chemsales.entities.ProductsEntity;
+import com.red.stevo.chemsales.models.AddStockModel;
 import com.red.stevo.chemsales.repositories.MedicineCategoryRepository;
 import com.red.stevo.chemsales.repositories.ProductsRepository;
 import jakarta.annotation.PostConstruct;
@@ -9,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -61,5 +64,37 @@ public class AddStockService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public ResponseEntity<HttpStatus> saveProduct(AddStockModel addStockModel) {
+
+        ProductsEntity product = new ProductsEntity();
+
+        /*handle new category and existing categories for new ad existing products.*/
+        categoryRepo.findAllByCategoryName(addStockModel.getProductCategory()).ifPresentOrElse(
+                product::setCategories,
+                () -> {
+                    MedicineCategoriesEntity medicineCategory = MedicineCategoriesEntity.
+                            builder().categoryName(addStockModel.getProductCategory()).build();
+
+                    categoryRepo.save(medicineCategory);
+                    product.setCategories(medicineCategory);
+                }
+        );
+
+
+        /*Save or update*/
+        if (addStockModel.getProductId() != null)
+            product.setProductId(addStockModel.getProductId());
+
+
+        product.setProductName(addStockModel.getProductName());
+        product.setProductBuyingPrice(addStockModel.getBuyingPrice());
+        product.setProductImageUrl(addStockModel.getImage());
+        product.setProductLocation(addStockModel.getLocation());
+        product.setProductSellingPrice(addStockModel.getSellingPrice());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
