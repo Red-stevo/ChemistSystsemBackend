@@ -21,13 +21,13 @@ public class searchProductController {
 
     @GetMapping("/product")
     public ResponseEntity<List<ProductsEntity>> searchProduct(
-            @RequestParam("productName") String productName){
+            @RequestParam("name") String productName){
         return searchService.searchProductName(productName);
     }
 
     @GetMapping("/category")
     public ResponseEntity<List<MedicineCategoriesEntity>> searchCategory(
-            @RequestParam("categoryName") String categoryName) {
+            @RequestParam("name") String categoryName) {
         return searchService.searchCategories(categoryName);
     }
 
