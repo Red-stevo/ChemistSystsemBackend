@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class SaveImage {
@@ -20,7 +22,9 @@ public class SaveImage {
 
             if(new File(path+"/"+fileName).exists()) return path+"/"+fileName;
 
-        } else
+        }else if(containsUUID(file.getName())) {
+            return  path+"/"+file.getName();
+        }else
             fileName =  UUID.randomUUID() + file.getName();
 
         try {
@@ -31,4 +35,17 @@ public class SaveImage {
 
         return path+"/"+fileName;
     }
+
+
+    private boolean containsUUID(String input) {
+        Pattern pattern = Pattern.compile(
+                "([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})");
+        Matcher matcher = pattern.matcher(input);
+        return matcher.find();
+    }
+
+    public void deleteImage(String path){
+        new File(path).delete();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.red.stevo.chemsales.service;
 
+import com.red.stevo.chemsales.Helpers.SaveImage;
 import com.red.stevo.chemsales.entities.MedicineCategoriesEntity;
 import com.red.stevo.chemsales.entities.ProductsEntity;
 import com.red.stevo.chemsales.models.AddStockModel;
@@ -26,6 +27,8 @@ public class AddStockService {
     private final MedicineCategoryRepository categoryRepo;
 
     private final ProductsRepository productsRepo;
+
+    private final SaveImage saveImage;
 
     @PostConstruct()
     public void handleDataSetup()  {
@@ -84,19 +87,28 @@ public class AddStockService {
         );
 
 
-        /*Save or update*/
-        if (addStockModel.getProductId() != null)
+        /*Save or update product details.*/
+        if (addStockModel.getProductId() != null) {
             product.setProductId(addStockModel.getProductId());
 
+            /*Handle image deletion if image was updated*/
+            if (!productsRepo.existsAllByProductImageUrl(addStockModel.getImage()))
+                saveImage.deleteImage(
+                        productsRepo.findProductImageUrlByProductId(addStockModel.getProductId()));
+
+        }
+
+        product.setProductImageUrl(addStockModel.getImage());
+        product.setProductImageUrl(addStockModel.getImage());
         product.setProductName(addStockModel.getProductName());
         product.setProductBuyingPrice(addStockModel.getBuyingPrice());
-        product.setProductImageUrl(addStockModel.getImage());
         product.setProductLocation(addStockModel.getLocation());
         product.setProductSellingPrice(addStockModel.getSellingPrice());
 
         productsRepo.save(product);
 
-        
+        /*Save or update product type details.*/
+
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
