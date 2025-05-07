@@ -1,9 +1,10 @@
 package com.red.stevo.chemsales.models;
 
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
-import java.awt.*;
+
 import java.time.LocalDate;
 
 @Data
@@ -25,5 +26,13 @@ public class AddStockModel {
     private Double buyingPrice;
 
     private Double sellingPrice;
+
+    private String type;
+
+    private Integer noOfBoxes;
+
+    private Integer noOfPacketsPerBox;
+
+    private Integer noOfTabletPerPacket;
 
 }

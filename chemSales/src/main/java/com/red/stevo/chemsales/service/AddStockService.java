@@ -88,12 +88,15 @@ public class AddStockService {
         if (addStockModel.getProductId() != null)
             product.setProductId(addStockModel.getProductId());
 
-
         product.setProductName(addStockModel.getProductName());
         product.setProductBuyingPrice(addStockModel.getBuyingPrice());
         product.setProductImageUrl(addStockModel.getImage());
         product.setProductLocation(addStockModel.getLocation());
         product.setProductSellingPrice(addStockModel.getSellingPrice());
+
+        productsRepo.save(product);
+
+        
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

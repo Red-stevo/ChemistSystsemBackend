@@ -11,8 +11,17 @@ import java.util.UUID;
 public class SaveImage {
 
     public String saveImage(MultipartFile file) {
+        String fileName;
         String path = "src/main/resources/images";
-        String fileName =  UUID.randomUUID() + file.getOriginalFilename();
+
+
+        if (file.getName().equalsIgnoreCase("defaultImage")){
+            fileName =  file.getName();
+
+            if(new File(path+"/"+fileName).exists()) return path+"/"+fileName;
+
+        } else
+            fileName =  UUID.randomUUID() + file.getName();
 
         try {
             file.transferTo(new File(path, fileName));
