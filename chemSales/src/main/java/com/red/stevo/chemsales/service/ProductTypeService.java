@@ -17,8 +17,8 @@ public class ProductTypeService {
 
     /**
      *
-     * @param dataTransfer -> allows us to pass the data from any class using dynamic logic,
-     *                     this helps reduce the number of DTO create for data transfer.
+     * @param dataTransfer -> allows us to pass the data from any class using dynamic logic;
+     *                     this helps reduce the number of DTO created for data transfer.
      */
     public void saveProducts(DataTransfer<ProductTypeEntity> dataTransfer) {
 
@@ -30,5 +30,7 @@ public class ProductTypeService {
 
         /*Save/update type entity details.*/
         typeRepo.save(typeEntity);
+
+        log.info("Update/Save the product Type details.");
     }
 }

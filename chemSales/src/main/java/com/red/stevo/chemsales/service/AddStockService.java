@@ -120,6 +120,8 @@ public class AddStockService {
                 .noOfTabletPerPacket(addStockModel.getNoOfTabletPerPacket())
                 .build());
 
+
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

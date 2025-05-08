@@ -17,23 +17,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="products_current_stock_table")
-public class ProductCurrentStocks {
+public class ProductCurrentStocksEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name="stock_id")
     private String stockId;
 
     @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
     private Double totalCost;
-
-    @Size(message = "Stock Count Too Large. Please Contact Your Developer.")
-    private Integer stockCount;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfStockUpdate;
-
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate expiryDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_product_current_stock", referencedColumnName = "product_id")

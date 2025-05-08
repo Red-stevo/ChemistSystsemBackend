@@ -31,7 +31,7 @@ public class ProductTypeEntity {
     private Integer noOfTabletPerPacket;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk-product_type", referencedColumnName = "product_id")
+    @JoinColumn(name = "fk-product_type", referencedColumnName = "product_id", unique = true)
     private ProductsEntity productsEntity;
 
 }
