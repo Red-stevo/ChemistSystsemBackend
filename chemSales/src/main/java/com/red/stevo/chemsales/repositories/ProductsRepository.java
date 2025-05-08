@@ -13,6 +13,9 @@ import java.util.Optional;
 @Repository()
 public interface ProductsRepository extends CrudRepository<ProductsEntity, String> {
 
+    @Query("SELECT COUNT (*) FROM ProductsEntity ")
+    Integer countItems();
+
     Optional<List<ProductsEntity>> findAllByProductNameContainingIgnoreCase(String searchText);
 
     Boolean existsAllByProductImageUrl(String url);

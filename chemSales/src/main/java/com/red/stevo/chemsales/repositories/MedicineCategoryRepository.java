@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository()
 public interface MedicineCategoryRepository extends CrudRepository<MedicineCategoriesEntity, String> {
 
-    @Query("SELECT COUNT (*) FROM MedicineCategoriesEntity")
-    Integer countItems();
 
     Boolean existsAllByCategoryName(String categoryName);
 

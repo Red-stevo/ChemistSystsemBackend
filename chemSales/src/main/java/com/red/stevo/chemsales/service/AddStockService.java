@@ -1,7 +1,9 @@
 package com.red.stevo.chemsales.service;
 
-import com.red.stevo.chemsales.Helpers.SaveImage;
+import com.red.stevo.chemsales.Helpers.classes.SaveImage;
+import com.red.stevo.chemsales.Helpers.interfaces.DataTransfer;
 import com.red.stevo.chemsales.entities.MedicineCategoriesEntity;
+import com.red.stevo.chemsales.entities.ProductTypeEntity;
 import com.red.stevo.chemsales.entities.ProductsEntity;
 import com.red.stevo.chemsales.models.AddStockModel;
 import com.red.stevo.chemsales.repositories.MedicineCategoryRepository;
@@ -26,13 +28,15 @@ public class AddStockService {
 
     private final MedicineCategoryRepository categoryRepo;
 
+    private final ProductTypeService productTypeService;
+
     private final ProductsRepository productsRepo;
 
     private final SaveImage saveImage;
 
     @PostConstruct()
     public void handleDataSetup()  {
-        if(categoryRepo.countItems() > 100) return;
+        if(productsRepo.countItems() > 100) return;
 
         try(BufferedReader br = new BufferedReader(new FileReader("src/main/resources/setupData/categoryInit.txt"))) {
             String line;
@@ -64,6 +68,7 @@ public class AddStockService {
 
             }
 
+            log.info("setup default products to the database.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -108,7 +113,12 @@ public class AddStockService {
         productsRepo.save(product);
 
         /*Save or update product type details.*/
-
+        productTypeService.saveProducts(() -> ProductTypeEntity
+                .builder()
+                .noOfBoxes(addStockModel.getNoOfBoxes())
+                .noOfPacketsPerBox(addStockModel.getNoOfPacketsPerBox())
+                .noOfTabletPerPacket(addStockModel.getNoOfTabletPerPacket())
+                .build());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

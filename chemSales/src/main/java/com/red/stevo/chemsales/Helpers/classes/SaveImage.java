@@ -1,4 +1,4 @@
-package com.red.stevo.chemsales.Helpers;
+package com.red.stevo.chemsales.Helpers.classes;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

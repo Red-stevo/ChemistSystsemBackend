@@ -1,10 +1,9 @@
 package com.red.stevo.chemsales.controllers.stockController;
 
 
-import com.red.stevo.chemsales.Helpers.SaveImage;
+import com.red.stevo.chemsales.Helpers.classes.SaveImage;
 import com.red.stevo.chemsales.models.AddStockModel;
 import com.red.stevo.chemsales.service.AddStockService;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
