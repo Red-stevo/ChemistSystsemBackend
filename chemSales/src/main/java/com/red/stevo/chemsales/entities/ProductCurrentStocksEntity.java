@@ -7,9 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 
 @Data
 @Builder
@@ -28,7 +25,7 @@ public class ProductCurrentStocksEntity {
     private Double totalCost;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_product_current_stock", referencedColumnName = "product_id")
+    @JoinColumn(name = "fk_product_current_stock", referencedColumnName = "product_id", unique = true)
     private ProductsEntity productsEntity;
 
 }
