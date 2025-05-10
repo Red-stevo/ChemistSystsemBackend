@@ -4,11 +4,14 @@ package com.red.stevo.chemsales.service;
 import com.red.stevo.chemsales.Helpers.interfaces.DataTransfer;
 import com.red.stevo.chemsales.entities.ExpirationDatesEntity;
 import com.red.stevo.chemsales.entities.ProductCurrentStocksEntity;
+import com.red.stevo.chemsales.entities.StockHistory;
 import com.red.stevo.chemsales.repositories.CurrentStockRepository;
 import com.red.stevo.chemsales.repositories.ExpirationDatesRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -18,6 +21,8 @@ public class CurrentStockServices {
     private final CurrentStockRepository currentStockRepo;
 
     private final ExpirationDatesRepository expirationDatesRepo;
+
+    private final StockHistoryService historyService;
 
     public void updateOnRestock(DataTransfer<ExpirationDatesEntity> getData) {
         ExpirationDatesEntity expirationDatesEntity = getData.getDataModel();
@@ -34,7 +39,7 @@ public class CurrentStockServices {
                 });
 
         currentStockRepo.save(currentStocks);
-
+        log.info("Saved the stock details.");
 
         /* Saving the current stock expiration date.These may be several for a single product, hence the
          * reaction we have this entity.
@@ -54,21 +59,27 @@ public class CurrentStockServices {
                 });
 
         expirationDatesRepo.save(expirationDatesEntity);
+        log.info("Saved the expiry dates.");
+
+        //Save the Stock History Details.
+        saveStockHistory(expirationDatesEntity);
+
+    }
+
+    private void saveStockHistory(ExpirationDatesEntity expirationDatesEntity) {
+        /* Stock history update
+        *
+        * The stock history table holds the data to feed to a line chart in the frontend.
+        * An instance of the stock history is the current history every time it changes.
+        * Thus well will update the stock history every time the the current stock changes.
+        *
+        * */
+        historyService.saveStockHistory(() -> StockHistory
+                .builder()
+                .dateOfStockUpdate(LocalDateTime.now().toLocalDate())
+                .productsEntity(expirationDatesEntity.getProductCurrentStocksEntity().getProductsEntity())
+                .stockCount(expirationDatesEntity.getStockCount())
+                .totalCost(expirationDatesEntity.getProductCurrentStocksEntity().getTotalCost())
+                .build());
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
