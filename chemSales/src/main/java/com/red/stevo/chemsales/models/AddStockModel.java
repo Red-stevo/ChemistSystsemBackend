@@ -3,6 +3,7 @@ package com.red.stevo.chemsales.models;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.time.LocalDate;
@@ -34,5 +35,6 @@ public class AddStockModel {
     private Integer noOfPacketsPerBox;
 
     private Integer noOfTabletPerPacket;
+
 
 }

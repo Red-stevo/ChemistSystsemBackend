@@ -71,7 +71,7 @@ public class CurrentStockServices {
         *
         * The stock history table holds the data to feed to a line chart in the frontend.
         * An instance of the stock history is the current history every time it changes.
-        * Thus well will update the stock history every time the the current stock changes.
+        * Thus well will update the stock history every time the current stock changes.
         *
         * */
         historyService.saveStockHistory(() -> StockHistory

@@ -23,11 +23,13 @@ public class addStockController {
 
     @PostMapping("/add/stock")
     public ResponseEntity<HttpStatus> addStock(
-            @RequestParam("image") MultipartFile image, @RequestBody AddStockModel addStockModel) {
+            @RequestParam("image") MultipartFile imageFile,
+            @RequestPart AddStockModel addStockModel) {
 
         /*Save image in a directory*/
-        addStockModel.setImage(saveImage.saveImage(image));
+        addStockModel.setImage(saveImage.saveImage(imageFile));
 
+        System.out.println(addStockModel);
         /*Save or update product data in the repository*/
         return addStockService.saveProduct(addStockModel);
     }

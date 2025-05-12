@@ -17,15 +17,15 @@ public class SaveImage {
         String path = "src/main/resources/images";
 
 
-        if (file.getName().equalsIgnoreCase("defaultImage")){
-            fileName =  file.getName();
+        if (file.getOriginalFilename().toLowerCase().contains("defaultImage.png".toLowerCase())){
+            fileName =  file.getOriginalFilename();
 
             if(new File(path+"/"+fileName).exists()) return path+"/"+fileName;
 
-        }else if(containsUUID(file.getName())) {
-            return  path+"/"+file.getName();
+        }else if(containsUUID(file.getOriginalFilename())) {
+            return  path+"/"+file.getOriginalFilename();
         }else
-            fileName =  UUID.randomUUID() + file.getName();
+            fileName =  UUID.randomUUID() + file.getOriginalFilename();
 
         try {
             file.transferTo(new File(path, fileName));
