@@ -20,7 +20,6 @@ public class MedicineCategoriesEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String categoryId;
 
-    @Size(max = 250, message = "Category Name was Too Long.Please Contact Your Developer.")
     @Column(unique = true)
     private String categoryName;
 

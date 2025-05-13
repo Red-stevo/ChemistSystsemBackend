@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository()
 public interface ProductsTypeRepository extends CrudRepository<ProductTypeEntity, String> {
 
-    @Query("SELECT T.typeId FROM ProductTypeEntity T WHERE T.productsEntity =: products")
+    @Query("SELECT T.typeId FROM ProductTypeEntity T WHERE T.productsEntity =:products")
     Optional<String> findTypeIdByProductsEntity(@Param("products") ProductsEntity products);
 }

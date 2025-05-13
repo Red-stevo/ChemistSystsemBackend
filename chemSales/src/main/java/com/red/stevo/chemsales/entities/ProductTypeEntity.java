@@ -18,16 +18,12 @@ public class ProductTypeEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String typeId;
 
-    @Size(max = 250, message = "The Product Type is Too Long. Product Type Not Support.Please Contact Your Developer.")
     private String type;
 
-    @Size(message = "Invalid Count.The Count is Not Supported. Please Contact Your Developer.")
     private Integer noOfBoxes;
 
-    @Size(message = "Invalid Count.The Count is Not Supported.Please Contact Your Developer.")
     private Integer noOfPacketsPerBox;
 
-    @Size(message = "Invalid Count.The Count is Not Supported.Please Contact Your Developer.")
     private Integer noOfTabletPerPacket;
 
     @OneToOne(cascade = CascadeType.ALL)

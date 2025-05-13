@@ -20,6 +20,6 @@ public interface ProductsRepository extends CrudRepository<ProductsEntity, Strin
 
     Boolean existsAllByProductImageUrl(String url);
 
-    @Query("SELECT T.productImageUrl FROM ProductsEntity T WHERE T.productId =: id")
-    String findProductImageUrlByProductId(@Param("id") String id);
+    @Query("SELECT T.productImageUrl FROM ProductsEntity T WHERE T.productId =:id")
+    Optional<String> findProductImageUrlByProductId(@Param("id") String id);
 }

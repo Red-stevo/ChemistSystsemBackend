@@ -23,10 +23,8 @@ public class ExpirationDatesEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String expirationDateId;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate expiryDate;
 
-    @Size(message = "Stock Count Too Large. Please Contact Your Developer.")
     private Integer stockCount;
 
     @ManyToOne(cascade = CascadeType.DETACH)

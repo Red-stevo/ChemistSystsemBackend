@@ -27,7 +27,7 @@ public class ProductsEntity {
 
     private String productLocation;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "fk_product_category", referencedColumnName = "category_id")
     private MedicineCategoriesEntity categories;
 

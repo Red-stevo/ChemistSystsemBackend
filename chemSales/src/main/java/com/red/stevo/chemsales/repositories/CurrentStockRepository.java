@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository()
 public interface CurrentStockRepository extends CrudRepository<ProductCurrentStocksEntity, String> {
 
-    @Query("SELECT T FROM ProductCurrentStocksEntity T WHERE T.productsEntity =: productsEntity")
+    @Query("SELECT T FROM ProductCurrentStocksEntity T WHERE T.productsEntity =:productsEntity")
     Optional<ProductCurrentStocksEntity> findStockEntityByProductsEntity(@Param("productsEntity") ProductsEntity productsEntity);
 
 }

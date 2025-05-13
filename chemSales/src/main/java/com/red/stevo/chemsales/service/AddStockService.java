@@ -1,17 +1,16 @@
 package com.red.stevo.chemsales.service;
 
 import com.red.stevo.chemsales.Helpers.classes.SaveImage;
-import com.red.stevo.chemsales.Helpers.interfaces.DataTransfer;
 import com.red.stevo.chemsales.entities.*;
 import com.red.stevo.chemsales.models.AddStockModel;
 import com.red.stevo.chemsales.repositories.MedicineCategoryRepository;
 import com.red.stevo.chemsales.repositories.ProductsRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +36,7 @@ public class AddStockService {
 
     @PostConstruct()
     public void handleDataSetup() {
+        log.info("Init method called but cause error later....");
         if (productsRepo.countItems() > 100) return;
 
         try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/setupData/categoryInit.txt"))) {
@@ -76,9 +76,11 @@ public class AddStockService {
     }
 
 
+    @Transactional()
     public ResponseEntity<HttpStatus> saveProduct(AddStockModel addStockModel) {
+        ProductsEntity product = productsRepo
+                .findById(addStockModel.getProductId()).orElse(new ProductsEntity());
 
-        ProductsEntity product = new ProductsEntity();
 
         /*handle new category and existing categories for new ad existing products.*/
         categoryRepo.findAllByCategoryName(addStockModel.getProductCategory()).ifPresentOrElse(
@@ -87,24 +89,19 @@ public class AddStockService {
                     MedicineCategoriesEntity medicineCategory = MedicineCategoriesEntity.
                             builder().categoryName(addStockModel.getProductCategory()).build();
 
-                    categoryRepo.save(medicineCategory);
+                    medicineCategory = categoryRepo.save(medicineCategory);
                     product.setCategories(medicineCategory);
                 }
         );
 
+        System.out.println(product.toString());
 
-        /*Save or update product details.*/
-        if (addStockModel.getProductId() != null) {
-            product.setProductId(addStockModel.getProductId());
+        /*Handle image update -> this will delete existing image when the product's image is updated.*/
+        if (!productsRepo.existsAllByProductImageUrl(addStockModel.getImage()))
+            productsRepo.findProductImageUrlByProductId(addStockModel.getProductId()).ifPresent(
+                    saveImage::deleteImage
+            );
 
-            /*Handle image deletion if image was updated*/
-            if (!productsRepo.existsAllByProductImageUrl(addStockModel.getImage()))
-                saveImage.deleteImage(
-                        productsRepo.findProductImageUrlByProductId(addStockModel.getProductId()));
-
-        }
-
-        product.setProductImageUrl(addStockModel.getImage());
         product.setProductImageUrl(addStockModel.getImage());
         product.setProductName(addStockModel.getProductName());
         product.setProductBuyingPrice(addStockModel.getBuyingPrice());

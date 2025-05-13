@@ -21,7 +21,6 @@ public class ProductCurrentStocksEntity {
     @Column(name="stock_id")
     private String stockId;
 
-    @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
     private Double totalCost;
 
     @OneToOne(cascade = CascadeType.ALL)

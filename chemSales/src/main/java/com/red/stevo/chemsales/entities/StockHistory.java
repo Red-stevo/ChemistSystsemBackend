@@ -23,13 +23,10 @@ public class StockHistory {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String stockId;
 
-    @Size(message = "System Does Not Support This Amount. Please Contact Your Developer.")
     private Double totalCost;
 
-    @Size(message = "Stock Count Too Large. Please Contact Your Developer.")
     private Integer stockCount;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfStockUpdate;
 
     @ManyToOne(cascade = CascadeType.ALL)
