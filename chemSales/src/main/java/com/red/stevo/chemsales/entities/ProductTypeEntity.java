@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class ProductTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "type_id")
     private String typeId;
 
     private String type;
@@ -26,8 +27,16 @@ public class ProductTypeEntity {
 
     private Integer noOfTabletPerPacket;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk-product_type", referencedColumnName = "product_id", unique = true)
+    private String productImageUrl;
+
+    private Double productBuyingPrice;
+
+    private Double productSellingPrice;
+
+    private String productLocation;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk-product_type", referencedColumnName = "product_id")
     private ProductsEntity productsEntity;
 
 }

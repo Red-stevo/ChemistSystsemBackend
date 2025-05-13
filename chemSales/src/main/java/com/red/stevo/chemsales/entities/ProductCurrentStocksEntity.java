@@ -23,8 +23,8 @@ public class ProductCurrentStocksEntity {
 
     private Double totalCost;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_product_current_stock", referencedColumnName = "product_id", unique = true)
-    private ProductsEntity productsEntity;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "fk_type_current_stock", referencedColumnName = "type_id", unique = true)
+    private ProductTypeEntity productTypeEntity;
 
 }

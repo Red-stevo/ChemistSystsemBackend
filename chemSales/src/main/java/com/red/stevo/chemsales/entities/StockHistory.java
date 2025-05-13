@@ -1,12 +1,10 @@
 package com.red.stevo.chemsales.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -29,9 +27,9 @@ public class StockHistory {
 
     private LocalDate dateOfStockUpdate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_stock_history_product", referencedColumnName = "product_id")
-    private ProductsEntity productsEntity;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "fk_stock_history_type", referencedColumnName = "type_id")
+    private ProductTypeEntity productTypeEntity;
 
 }
 

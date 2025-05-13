@@ -94,49 +94,40 @@ public class AddStockService {
                 }
         );
 
-        System.out.println(product.toString());
-
-        /*Handle image update -> this will delete existing image when the product's image is updated.*/
-        if (!productsRepo.existsAllByProductImageUrl(addStockModel.getImage()))
-            productsRepo.findProductImageUrlByProductId(addStockModel.getProductId()).ifPresent(
-                    saveImage::deleteImage
-            );
-
-        product.setProductImageUrl(addStockModel.getImage());
         product.setProductName(addStockModel.getProductName());
-        product.setProductBuyingPrice(addStockModel.getBuyingPrice());
-        product.setProductLocation(addStockModel.getLocation());
-        product.setProductSellingPrice(addStockModel.getSellingPrice());
-
-        productsRepo.save(product);
 
         /*Save product type details.*/
-        saveProductTypeDetails(addStockModel);
 
         /*Save Product current stock details.*/
-        updateCurrentStock(addStockModel, product);
+        updateCurrentStock(addStockModel, saveProductTypeDetails(addStockModel, productsRepo.save(product)));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private void saveProductTypeDetails(AddStockModel addStockModel) {
+    private ProductTypeEntity saveProductTypeDetails(AddStockModel addStockModel, ProductsEntity product) {
         /*Save or update product type details.*/
-        productTypeService.saveProducts(() -> ProductTypeEntity
+        return productTypeService.saveProducts(() -> ProductTypeEntity
                 .builder()
                 .noOfBoxes(addStockModel.getNoOfBoxes())
                 .noOfPacketsPerBox(addStockModel.getNoOfPacketsPerBox())
                 .noOfTabletPerPacket(addStockModel.getNoOfTabletPerPacket())
+                .productsEntity(product)
+                .type(addStockModel.getType())
+                .productBuyingPrice(addStockModel.getBuyingPrice())
+                .productSellingPrice(addStockModel.getSellingPrice())
+                .productImageUrl(addStockModel.getImage())
+                .productLocation(addStockModel.getLocation())
                 .build());
     }
 
-    private void updateCurrentStock(AddStockModel addStockModel, ProductsEntity product) {
+    private void updateCurrentStock(AddStockModel addStockModel, ProductTypeEntity typeEntity) {
         /*Saving the expiration details.*/
         currentStockServices.updateOnRestock(() -> {
 
             /*Prepare the current stock entity class.*/
             ProductCurrentStocksEntity currentStocksEntity = ProductCurrentStocksEntity
                     .builder()
-                    .productsEntity(product)
+                    .productTypeEntity(typeEntity)
                     /*Calculating product total cost.The selling price passed
                      from the frontend is the unit price i.e., price per box so the total cost,
                     (am sure you can go that. mmmh?)

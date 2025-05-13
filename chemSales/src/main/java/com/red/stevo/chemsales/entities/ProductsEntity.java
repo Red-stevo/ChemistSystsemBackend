@@ -19,14 +19,6 @@ public class ProductsEntity {
 
     private String productName;
 
-    private String productImageUrl;
-
-    private Double productBuyingPrice;
-
-    private Double productSellingPrice;
-
-    private String productLocation;
-
     @ManyToOne()
     @JoinColumn(name = "fk_product_category", referencedColumnName = "category_id")
     private MedicineCategoriesEntity categories;

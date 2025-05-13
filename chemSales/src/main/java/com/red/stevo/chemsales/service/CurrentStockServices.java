@@ -32,7 +32,7 @@ public class CurrentStockServices {
         /*Check whether the product current stock details already exist; if so, get the id to
          *ensure that when we apply save, the entity details are updated not inserting new one.
          */
-        currentStockRepo.findStockEntityByProductsEntity(currentStocks.getProductsEntity())
+        currentStockRepo.findStockEntityByProductTypeEntityId(currentStocks.getProductTypeEntity().getTypeId())
                 .ifPresent(stockEntity -> {
                     currentStocks.setStockId(stockEntity.getStockId());
                     currentStocks.setTotalCost(currentStocks.getTotalCost() + stockEntity.getTotalCost());
@@ -77,7 +77,7 @@ public class CurrentStockServices {
         historyService.saveStockHistory(() -> StockHistory
                 .builder()
                 .dateOfStockUpdate(LocalDateTime.now().toLocalDate())
-                .productsEntity(expirationDatesEntity.getProductCurrentStocksEntity().getProductsEntity())
+                .productTypeEntity(expirationDatesEntity.getProductCurrentStocksEntity().getProductTypeEntity())
                 .stockCount(expirationDatesEntity.getStockCount())
                 .totalCost(expirationDatesEntity.getProductCurrentStocksEntity().getTotalCost())
                 .build());

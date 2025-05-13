@@ -16,21 +16,22 @@ public class ProductTypeService {
     private final ProductsTypeRepository typeRepo;
 
     /**
-     *
      * @param dataTransfer -> allows us to pass the data from any class using dynamic logic;
      *                     this helps reduce the number of DTO created for data transfer.
+     * @return
      */
-    public void saveProducts(DataTransfer<ProductTypeEntity> dataTransfer) {
+    public ProductTypeEntity saveProducts(DataTransfer<ProductTypeEntity> dataTransfer) {
 
         ProductTypeEntity typeEntity = dataTransfer.getDataModel();
 
         /*Get the product type details if already exist -> this is to ensure update in the case when the
         * type details already exist*/
-        typeRepo.findTypeIdByProductsEntity(typeEntity.getProductsEntity()).ifPresent(typeEntity::setTypeId);
-
-        /*Save/update type entity details.*/
-        typeRepo.save(typeEntity);
+        typeRepo.findTypeIdByProductsEntityAndType(typeEntity.getProductsEntity(), typeEntity.getType())
+                .ifPresent(typeEntity::setTypeId);
 
         log.info("Update/Save the product Type details.");
+        /*Save/update type entity details.*/
+        return typeRepo.save(typeEntity);
+
     }
 }
