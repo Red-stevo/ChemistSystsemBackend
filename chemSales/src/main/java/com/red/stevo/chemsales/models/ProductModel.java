@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,4 +29,16 @@ public class ProductModel {
 
     private MedicineCategoriesEntity categories;
 
+
+    @Override
+    public boolean equals(Object newObj) {
+        if (newObj == null || getClass() != newObj.getClass()) return false;
+        ProductModel productModel = (ProductModel) newObj;
+        return Objects.equals(this.productId, productModel.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.productId);
+    }
 }
