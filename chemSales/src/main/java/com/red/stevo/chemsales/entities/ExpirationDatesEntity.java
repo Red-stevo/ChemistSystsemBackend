@@ -27,7 +27,7 @@ public class ExpirationDatesEntity {
 
     private Integer stockCount;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne()
     @JoinColumn(name = "fk_expirations_date_current_stock", referencedColumnName = "stock_id")
     private ProductCurrentStocksEntity productCurrentStocksEntity;
 
