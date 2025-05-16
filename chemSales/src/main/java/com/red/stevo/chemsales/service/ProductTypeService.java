@@ -3,6 +3,7 @@ package com.red.stevo.chemsales.service;
 
 import com.red.stevo.chemsales.Helpers.interfaces.DataTransfer;
 import com.red.stevo.chemsales.entities.ProductTypeEntity;
+import com.red.stevo.chemsales.repositories.ProductTypeRepo;
 import com.red.stevo.chemsales.repositories.ProductsTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,11 @@ public class ProductTypeService {
 
     private final ProductsTypeRepository typeRepo;
 
+    private final ProductTypeRepo productTypeRepo;
+
     /**
      * @param dataTransfer -> allows us to pass the data from any class using dynamic logic;
      *                     this helps reduce the number of DTO created for data transfer.
-     * @return
      */
     public ProductTypeEntity saveProducts(DataTransfer<ProductTypeEntity> dataTransfer) {
 
@@ -31,7 +33,7 @@ public class ProductTypeService {
 
         log.info("Update/Save the product Type details.");
         /*Save/update type entity details.*/
-        return typeRepo.save(typeEntity);
+        return productTypeRepo.save(typeEntity);
 
     }
 }

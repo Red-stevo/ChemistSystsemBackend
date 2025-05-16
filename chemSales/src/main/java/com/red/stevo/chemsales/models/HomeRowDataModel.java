@@ -3,13 +3,17 @@ package com.red.stevo.chemsales.models;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Data
-@Builder()
+@Builder
 @AllArgsConstructor
-public class ProductDetailsModel {
+@NoArgsConstructor
+public class HomeRowDataModel {
 
     private String productId;
 
@@ -17,14 +21,8 @@ public class ProductDetailsModel {
 
     private String productCategory;
 
-    private Integer noOfPacketsPerBox;
+    private StockStatus stockStatus;
 
-    private Integer noOfTabletPerPacket;
-
-    private Double sellingPrice;
-
-    private List<Integer> stockCount;
-
-    private String type;
+    private Map<String, String> priceDetails;
 
 }
