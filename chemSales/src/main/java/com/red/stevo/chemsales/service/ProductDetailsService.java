@@ -27,13 +27,11 @@ public class ProductDetailsService {
 
         Pageable pageable = PageRequest.of(pageData.getPage(), pageData.getSize());
 
-        System.out.println(Arrays.toString(productsTypeRepo
-                .findPageableDisplayProducts(pageData.getFilter(), pageable).get().toArray()));
 
-        /*Page<ProductDetailsModel> products = productsTypeRepo
-                .findPageableDisplayProducts(pageData.getFilter(), pageable);*/
+        Page<ProductDetailsModel> products = productsTypeRepo
+                .findPageableDisplayProducts(pageData.getFilter(), pageable);
 
-        /*System.out.println(products);
+        System.out.println(products);
 
         //Process the page to our desired model format and necessary fields.
         HomePageDetailsModel detailsModel = new HomePageDetailsModel();
@@ -50,7 +48,7 @@ public class ProductDetailsService {
                     .builder()
                     .productId(product.getProductId())
                     .productName(product.getProductName())
-                    .productCategory(product.getProductCategory())
+                    .productCategory(product.getCategoryName())
                     .priceDetails(priceMap)
                     .stockStatus(determineStatus(product.getProductId()))
                     .build());
@@ -58,9 +56,8 @@ public class ProductDetailsService {
         });
 
         detailsModel.setHomeRowDataList(homeRowData);
-*/
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(detailsModel, HttpStatus.OK);
     }
 
 

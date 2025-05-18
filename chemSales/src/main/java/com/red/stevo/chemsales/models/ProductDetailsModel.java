@@ -11,11 +11,13 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDetailsModel {
 
-    private String productId;
-
     private String productName;
 
-    private String productCategory;
+    private String productId;
+
+    private String categoryName;
+
+    private String type;
 
     private Integer noOfPacketsPerBox;
 
@@ -23,8 +25,7 @@ public class ProductDetailsModel {
 
     private Double sellingPrice;
 
-    private List<Integer> stockCount;
+    private Integer stockCount;
 
-    private String type;
 
 }
