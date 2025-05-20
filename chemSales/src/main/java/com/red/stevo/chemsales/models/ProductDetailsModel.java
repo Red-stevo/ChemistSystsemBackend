@@ -25,7 +25,4 @@ public class ProductDetailsModel {
 
     private Double sellingPrice;
 
-    private Integer stockCount;
-
-
 }

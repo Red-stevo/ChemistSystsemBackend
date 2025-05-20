@@ -31,8 +31,6 @@ public class ProductDetailsService {
         Page<ProductDetailsModel> products = productsTypeRepo
                 .findPageableDisplayProducts(pageData.getFilter(), pageable);
 
-        System.out.println(products);
-
         //Process the page to our desired model format and necessary fields.
         HomePageDetailsModel detailsModel = new HomePageDetailsModel();
         detailsModel.setTotalPages(products.getTotalPages());
@@ -40,18 +38,30 @@ public class ProductDetailsService {
 
         List<HomeRowDataModel> homeRowData = new ArrayList<>();
 
+
         products.get().forEach(product -> {
 
             Map<String, String> priceMap = getMap(product);
 
-            homeRowData.add(HomeRowDataModel
+            HomeRowDataModel rowDataModel = HomeRowDataModel
                     .builder()
                     .productId(product.getProductId())
                     .productName(product.getProductName())
                     .productCategory(product.getCategoryName())
+                    .type(product.getType())
                     .priceDetails(priceMap)
                     .stockStatus(determineStatus(product.getProductId()))
-                    .build());
+                    .build();
+
+
+            /*Trigger the custom equal method implemented inside the HomeRowDataModel class
+            * If the product already exists then, we do not have to add it again.*/
+            if(homeRowData.contains(rowDataModel)){
+                detailsModel.setTotalCount(detailsModel.getTotalCount()-1);
+                return;
+            }
+
+            homeRowData.add(rowDataModel);
 
         });
 
@@ -65,24 +75,17 @@ public class ProductDetailsService {
         Map<String, String> priceMap = new HashMap<>();
         DecimalFormat format = new DecimalFormat("#.00");
 
-        if (product.getType().equalsIgnoreCase("general")) {
-            priceMap.put("Price Per Box", "KSH " + product.getSellingPrice());
-            priceMap.put("Price Per Item", "KSH " + format
-                    .format((product.getSellingPrice() / product.getNoOfPacketsPerBox())));
 
-        } else {
-            priceMap.put("Price Per Box", "KSH " + product.getSellingPrice());
-            priceMap.put("Price Per Packet", "KSH " + (
-                    format.format((product.getSellingPrice() / product.getNoOfPacketsPerBox()))
-            ));
+        priceMap.put("Price Per Box", "KSH " + product.getSellingPrice());
+        priceMap.put("Price Per Packet", "KSH " + format
+                .format((product.getSellingPrice() / product.getNoOfPacketsPerBox())));
+
+        if (!product.getType().equalsIgnoreCase("general"))
             priceMap.put("Price Per Tablet", "KSH " + (
                             format.format((product
-                                                     .getSellingPrice() / product
-                                                     .getNoOfPacketsPerBox()) / product.getNoOfTabletPerPacket()
-                                    )
-                    )
-            );
-        }
+                                    .getSellingPrice() / product
+                                    .getNoOfPacketsPerBox()) / product.getNoOfTabletPerPacket())));
+
         return priceMap;
     }
 

@@ -27,24 +27,20 @@ public interface ProductsTypeRepository extends JpaRepository<ProductTypeEntity,
     @Query(
             value =
 """
-SELECT new com.red.stevo.chemsales.models.ProductDetailsModel(T.productsEntity.productName AS productName,
-T.productsEntity.productId AS productId,
-T.productsEntity.categories.categoryName as categoryName,
+SELECT new com.red.stevo.chemsales.models.ProductDetailsModel(T.productsEntity.productName,
+T.productsEntity.productId,
+T.productsEntity.categories.categoryName,
 T.type,
 T.noOfPacketsPerBox,
 T.noOfTabletPerPacket,
-T.productSellingPrice as sellingPrice,
-V.stockCount) FROM ProductTypeEntity T JOIN ProductCurrentStocksEntity U ON
-U.productTypeEntity.typeId = T.typeId
-JOIN ExpirationDatesEntity V ON V.productCurrentStocksEntity.stockId = U.stockId
+T.productSellingPrice ) FROM ProductTypeEntity T
 WHERE (:filter IS NULL OR  LOWER(T.productsEntity.productName) LIKE LOWER(CONCAT('%', :filter, '%'))
 OR LOWER(T.productsEntity.categories.categoryName) LIKE LOWER(CONCAT('%', :filter, '%') ))
+ORDER BY T.productsEntity.productName
 """,
             countQuery =
 """
-SELECT COUNT (*) FROM ProductTypeEntity T JOIN ProductCurrentStocksEntity U ON
-U.productTypeEntity.typeId = T.typeId
-JOIN ExpirationDatesEntity V ON V.productCurrentStocksEntity.stockId = U.stockId
+SELECT COUNT (*) FROM ProductTypeEntity T
 WHERE (:filter IS NULL OR  LOWER(T.productsEntity.productName) LIKE LOWER(CONCAT('%', :filter, '%'))
 OR LOWER(T.productsEntity.categories.categoryName) LIKE LOWER(CONCAT('%', :filter, '%') ))
 """
